@@ -34,7 +34,7 @@ class Application:
         provider_name = self.config_manager.get("PROVIDER", "StubProvider")
         if provider_name == "HeadlessWebProvider":
             profile_path = f"slots/{slot_id}"
-            return HeadlessWebProvider(user_profile_path=profile_path)
+            return HeadlessWebProvider(user_profile_path=profile_path, config=self.config_manager)
         return StubProvider()
 
     def start_booking(self):

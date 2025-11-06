@@ -5,9 +5,11 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import QTimer
 from datetime import datetime
+
 from src.gui.new_ticket_tab import NewTicketTab
 from src.gui.saved_tickets_tab import SavedTicketsTab
 from src.gui.settings_tab import SettingsTab
+from src.utils.paths import resource_path
 
 class MainWindow(QMainWindow):
     def __init__(self, config_manager, parent=None):
@@ -31,7 +33,7 @@ class MainWindow(QMainWindow):
 
         # --- Middle Section: Tabs ---
         self.tabs = QTabWidget()
-        self.new_ticket_tab = NewTicketTab()
+        self.new_ticket_tab = NewTicketTab(config_manager=self.config_manager, resource_path_fn=resource_path)
         self.saved_tickets_tab = SavedTicketsTab()
         self.settings_tab = SettingsTab(config_manager=self.config_manager)
 
