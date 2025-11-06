@@ -1,32 +1,28 @@
 from PySide6.QtCore import QThread, Signal
-from src.automation.irctc_bot import IRCTC_Bot
-import os
+
+from src.automation.data_provider import DataProvider
 
 class BookingSlot(QThread):
     """
-    Represents a single, threaded booking slot that runs an IRCTC bot
-    in an isolated browser profile.
+    Represents a single, threaded booking slot that runs a DataProvider
+    to perform the booking workflow.
     """
     # Signals to communicate with the GUI
     log_message = Signal(str)
     booking_status = Signal(str) # e.g., "Success", "Failed", "In Progress"
 
-    def __init__(self, slot_id: int, user_config: dict, ticket_config: dict, parent=None):
+    def __init__(self, slot_id: int, provider: DataProvider, user_config: dict, ticket_config: dict, parent=None):
         super().__init__(parent)
         self.slot_id = slot_id
+        self.provider = provider
         self.user_config = user_config
         self.ticket_config = ticket_config
-
-        self.profile_path = os.path.join(os.getcwd(), f'slots/{self.slot_id}')
-        self.bot = None
 
     def run(self):
         """The main entry point for the thread's execution."""
         self.log_message.emit(f"Slot {self.slot_id}: Initializing...")
 
         try:
-            self.bot = IRCTC_Bot(user_profile_path=self.profile_path)
-            self.bot.launch_browser()
             self.log_message.emit(f"Slot {self.slot_id}: Browser launched.")
 
             # This is a placeholder for the full booking workflow

@@ -1,6 +1,7 @@
 from playwright.sync_api import sync_playwright, Page, Browser
 import time
 import random
+from typing import Optional
 
 def human_like_typing(page: Page, selector: str, text: str):
     """Types text into an element with human-like delays."""
@@ -12,8 +13,8 @@ def human_like_typing(page: Page, selector: str, text: str):
 
 class IRCTC_Bot:
     def __init__(self, user_profile_path: str):
-        self.browser: Browser = None
-        self.page: Page = None
+        self.browser: Optional[Browser] = None
+        self.page: Optional[Page] = None
         self.user_profile_path = user_profile_path
         self.playwright = sync_playwright().start()
 

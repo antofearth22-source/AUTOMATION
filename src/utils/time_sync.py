@@ -1,6 +1,5 @@
 import socket
 import struct
-import time
 from datetime import datetime
 
 class NtpSync:

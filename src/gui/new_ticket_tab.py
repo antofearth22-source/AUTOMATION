@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QFormLayout, QLineEdit, QComboBox,
-    QDateEdit, QPushButton, QLabel, QGroupBox, QHBoxLayout, QCheckBox,
-    QCompleter
+    QDateEdit, QPushButton, QGroupBox, QHBoxLayout, QCompleter
 )
 from PySide6.QtCore import QDate
 import json

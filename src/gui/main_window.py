@@ -68,8 +68,13 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == '__main__':
+    # This block is for testing the main window in isolation.
+    class MockConfigManager:
+        def get(self, key, default=None):
+            return default
+
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = MainWindow(config_manager=MockConfigManager())
     window.show()
 
     # Example of logging

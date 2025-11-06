@@ -2,12 +2,16 @@ import logging
 import os
 from datetime import datetime
 from PySide6.QtCore import QObject, Signal
+import sys
+
+# This allows the script to be run directly for testing by adding the project root to the path.
+if __name__ == '__main__':
+    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
+from src.utils.paths import resource_path
 
 class QtLogHandler(logging.Handler, QObject):
-    """
-    A custom logging handler that emits a Qt signal for each log record.
-    This allows redirecting logs to a GUI widget.
-    """
+    """A custom logging handler that emits a Qt signal for each log record."""
     log_updated = Signal(str)
 
     def __init__(self, parent=None):
@@ -18,65 +22,48 @@ class QtLogHandler(logging.Handler, QObject):
         msg = self.format(record)
         self.log_updated.emit(msg)
 
-def setup_logger(log_dir="logs"):
-    """
-    Configures and returns a logger with file and GUI handlers.
-    """
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
+def setup_logger():
+    """Configures and returns a logger with file and GUI handlers."""
+    # Ensure the log directory exists in a user-writable location
+    log_dir_base = os.getenv('LOCALAPPDATA', resource_path())
+    log_dir = os.path.join(log_dir_base, 'IrctcPro', 'logs')
 
-    # Create a logger
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir, exist_ok=True)
+
     logger = logging.getLogger("IRCTC_Pro")
     logger.setLevel(logging.DEBUG)
 
-    # Create a formatter
+    # Prevent adding duplicate handlers
+    if logger.hasHandlers():
+        logger.handlers.clear()
+
     formatter = logging.Formatter(
         '%(asctime)s - [%(levelname)s] - (%(threadName)s) - %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S'
     )
 
     # --- File Handler ---
-    # Rotates logs, keeping the most recent.
     session_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    file_handler = logging.FileHandler(os.path.join(log_dir, f"session_{session_timestamp}.log"))
+    log_file = os.path.join(log_dir, f"session_{session_timestamp}.log")
+    file_handler = logging.FileHandler(log_file, encoding='utf-8')
     file_handler.setLevel(logging.INFO)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
 
-    # --- GUI Handler (via Qt Signal) ---
-    # The handler itself will be added in the main GUI window
-    # so it can be connected to the log widget.
-
-    # --- Console Handler (for debugging) ---
+    # --- Console Handler (for debugging in dev environment) ---
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.DEBUG)
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
 
-    logger.info("Logger configured successfully.")
+    logger.info(f"Logger configured. Log file: {log_file}")
     return logger
 
 if __name__ == '__main__':
     # Test the logger configuration
-    import threading
-    import time
-
     logger = setup_logger()
-    logger.debug("This is a debug message.")
-    logger.info("This is an info message.")
-    logger.warning("This is a warning message.")
-    logger.error("This is an error message.")
-
-    def worker():
-        thread_name = threading.current_thread().name
-        logger.info(f"Logging from thread: {thread_name}")
-
-    # Simulate logging from multiple threads (like our booking slots)
-    thread1 = threading.Thread(target=worker, name="Slot-1")
-    thread2 = threading.Thread(target=worker, name="Slot-2")
-    thread1.start()
-    thread2.start()
-    thread1.join()
-    thread2.join()
-
-    print("\nLog test complete. Check the 'logs' directory for the output file.")
+    logger.info("This is a test log message.")
+    print("\nLog test complete.")
+    # The output will show the log path, which will include 'localappdata' on Windows.
+    # In this environment, it will fall back to the project's root.
