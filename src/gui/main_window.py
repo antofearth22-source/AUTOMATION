@@ -1,7 +1,7 @@
 import sys
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QTabWidget, QWidget, QVBoxLayout,
-    QLabel, QTextEdit, QStatusBar
+    QLabel, QTextEdit, QStatusBar, QPushButton
 )
 from PySide6.QtCore import QTimer
 from datetime import datetime
@@ -45,6 +45,10 @@ class MainWindow(QMainWindow):
         self.log_console.setReadOnly(True)
         self.log_console.setStyleSheet("background-color: #f0f0f0; font-family: Consolas, monospace;")
         self.main_layout.addWidget(self.log_console)
+
+        # --- Action Buttons ---
+        self.start_booking_button = QPushButton("Start Booking")
+        self.main_layout.addWidget(self.start_booking_button)
 
         # --- Status Bar ---
         self.status_bar = QStatusBar()

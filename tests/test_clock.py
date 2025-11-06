@@ -2,7 +2,6 @@ import unittest
 import os
 import sys
 from datetime import datetime
-import pytz
 
 # Add the project root to the path to allow imports from src
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
