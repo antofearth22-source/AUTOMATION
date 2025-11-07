@@ -76,9 +76,15 @@ class NewTicketTab(QWidget):
         self.main_layout.addWidget(options_group)
 
         # --- Action Buttons ---
+        action_layout = QHBoxLayout()
         self.save_ticket_button = QPushButton("Save Ticket Configuration")
         self.save_ticket_button.clicked.connect(self.save_ticket)
-        self.main_layout.addWidget(self.save_ticket_button)
+        self.start_booking_button = QPushButton("Start Booking") # This button will be connected in main.py
+
+        action_layout.addStretch()
+        action_layout.addWidget(self.save_ticket_button)
+        action_layout.addWidget(self.start_booking_button)
+        self.main_layout.addLayout(action_layout)
 
         self.setLayout(self.main_layout)
 

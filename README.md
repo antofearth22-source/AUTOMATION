@@ -14,6 +14,16 @@ IRCTC Pro is a comprehensive, Windows-based application designed to automate the
 - **Payment Flexibility**: Support for both UPI and card payment methods.
 - **Security**: Secure credential storage using Windows Credential Manager and DPAPI.
 - **Decoupled CAPTCHA Solving**: Uses an external, separately compiled CAPTCHA solver for security and modularity.
+- **Secure Multi-Account Storage**: Securely manage multiple IRCTC accounts ("slots") using the Windows Credential Manager.
+
+## Secure Account Management (Slots)
+
+This application uses a secure "vault" system to manage multiple IRCTC accounts, referred to as "slots".
+
+-   **Metadata**: Account information like your IRCTC username and a custom label is stored in a JSON file located at `%APPDATA%\\IrctcPro\\config\\vault_index.json`.
+-   **Secrets**: Your sensitive information (passwords and TOTP keys) is **never** stored in this file. Instead, it is stored securely in the **Windows Credential Manager**.
+
+You can add, edit, and remove accounts from the **Settings -> Accounts** tab within the application.
 
 ## Build and Deployment
 
