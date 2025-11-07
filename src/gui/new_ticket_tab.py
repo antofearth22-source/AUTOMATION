@@ -42,11 +42,15 @@ class NewTicketTab(QWidget):
         self.class_input = QComboBox()
         self.class_input.addItems(["AC 3 Tier (3A)", "AC 2 Tier (2A)", "Sleeper (SL)", "AC Chair car (CC)"])
 
+        self.quota_input = QComboBox()
+        self.quota_input.addItems(["General", "Tatkal", "Premium Tatkal", "Ladies"])
+
         journey_layout.addRow("Ticket Name:", self.ticket_name_input)
         journey_layout.addRow("From Station:", self.from_station_input)
         journey_layout.addRow("To Station:", self.to_station_input)
         journey_layout.addRow("Journey Date:", self.journey_date_input)
         journey_layout.addRow("Class:", self.class_input)
+        journey_layout.addRow("Quota:", self.quota_input)
         journey_group.setLayout(journey_layout)
         self.main_layout.addWidget(journey_group)
 
@@ -153,7 +157,7 @@ class NewTicketTab(QWidget):
             "to_station": to_station_code,
             "journey_date": self.journey_date_input.date().toString("yyyy-MM-dd"),
             "class": self.class_input.currentText().split(" (")[1][:-1], # Extracts '3A' from 'AC 3 Tier (3A)'
-            "quota": "Tatkal",
+            "quota": self.quota_input.currentText(),
             "passengers": [],
             "payment_method": self.payment_method_input.currentText(),
             "slot_number": int(self.slot_input.currentText().split(" ")[1])

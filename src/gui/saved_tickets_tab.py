@@ -12,8 +12,8 @@ class SavedTicketsTab(QWidget):
         self.main_layout = QVBoxLayout(self)
 
         self.ticket_table = QTableWidget()
-        self.ticket_table.setColumnCount(6)
-        self.ticket_table.setHorizontalHeaderLabels(["Name", "Route", "Date", "Class", "Slot", "Actions"])
+        self.ticket_table.setColumnCount(7)
+        self.ticket_table.setHorizontalHeaderLabels(["Name", "Route", "Date", "Class", "Quota", "Slot", "Actions"])
         header = self.ticket_table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.ticket_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
@@ -41,7 +41,8 @@ class SavedTicketsTab(QWidget):
             self.ticket_table.setItem(row, 1, QTableWidgetItem(route))
             self.ticket_table.setItem(row, 2, QTableWidgetItem(ticket.get("journey_date", "")))
             self.ticket_table.setItem(row, 3, QTableWidgetItem(ticket.get("class", "")))
-            self.ticket_table.setItem(row, 4, QTableWidgetItem(str(ticket.get("slot_number", ""))))
+            self.ticket_table.setItem(row, 4, QTableWidgetItem(ticket.get("quota", "General"))) # Default to General if not found
+            self.ticket_table.setItem(row, 5, QTableWidgetItem(str(ticket.get("slot_number", ""))))
 
             # Placeholder for action buttons
-            self.ticket_table.setCellWidget(row, 5, QPushButton("Use as Template"))
+            self.ticket_table.setCellWidget(row, 6, QPushButton("Use as Template"))
