@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-const pLimit = require('p-limit').default;
+const pLimit = require('p-limit');
 const currencyConverter = require('./services/currency-converter');
 
 // Load configuration
@@ -103,6 +103,11 @@ app.post('/search-flights', apiKeyMiddleware, async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+
+module.exports = app;

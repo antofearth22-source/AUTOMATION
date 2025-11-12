@@ -13,8 +13,8 @@ async function search(searchParams, country) {
   console.log(`[SerpApi] Searching for flights from ${country.name} with params:`, searchParams);
 
   // --- Proxy Configuration ---
-  const proxyHost = `proxy.${country.code.toLowerCase()}.example.com`;
-  const proxyPort = 8080;
+  const proxyHost = config.proxy.host;
+  const proxyPort = config.proxy.port;
   const proxyUsername = config.proxy.username;
   const proxyPassword = config.proxy.password;
 

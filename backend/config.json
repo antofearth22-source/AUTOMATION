@@ -6,8 +6,10 @@
     "currencyConverter": "CURRENCY_CONVERTER_PLACEHOLDER_KEY"
   },
   "proxy": {
-    "username": "PROXY_USERNAME",
-    "password": "PROXY_PASSWORD"
+    "username": "933c1763897e61f2d76f",
+    "password": "0a09ea01c6d0171a",
+    "host": "gw.dataimpulse.com",
+    "port": 823
   },
   "countries": [
     { "code": "AD", "name": "Andorra", "serpapi_gl": "ad", "skyscanner_market": "AD", "language": "ca-AD", "timezone": "Europe/Andorra" },
