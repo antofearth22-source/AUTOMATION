@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flight Fare Finder</title>
+  <style>
+    body { font-family: sans-serif; width: 350px; padding: 10px; }
+    .input-group { margin-bottom: 10px; }
+    label { display: block; margin-bottom: 5px; }
+    input { width: 95%; padding: 5px; }
+    button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+    #results { margin-top: 15px; }
+    .loading { text-align: center; }
+    .result-item { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+    .result-item h3 { margin: 0 0 5px; }
+    .price { font-size: 1.1em; }
+    .book-button { float: right; }
+  </style>
+</head>
+<body>
+  <h1>Geo-Variant Flight Fare Finder</h1>
+  <div class="input-group">
+    <label for="origin">Origin</label>
+    <input type="text" id="origin" placeholder="e.g., JFK">
+  </div>
+  <div class="input-group">
+    <label for="destination">Destination</label>
+    <input type="text" id="destination" placeholder="e.g., LHR">
+  </div>
+  <div class="input-group">
+    <label for="date">Date</label>
+    <input type="date" id="date">
+  </div>
+  <div class="input-group">
+    <label for="date-flexibility">Date Flexibility (+/- days)</label>
+    <input type="number" id="date-flexibility" min="0" max="3" value="0">
+  </div>
+  <button id="search-button">Search Flights</button>
+  <div id="results">
+    <!-- Results will be rendered here -->
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
