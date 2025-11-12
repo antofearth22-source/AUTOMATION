@@ -18,12 +18,20 @@ This guide provides a step-by-step process for manually testing the complete fun
 
 ## Part 2: Frontend Setup (Loading the Extension)
 
-1.  **Open Google Chrome.**
-2.  **Navigate to `chrome://extensions`.**
-3.  **Enable "Developer mode"** using the toggle in the top-right corner.
-4.  **Click "Load unpacked".**
-5.  **Select the `frontend` directory** from the project.
-6.  The "Geo-Variant Flight Fare Finder" extension should now appear in your list of extensions.
+**Important:** To avoid errors, please use the provided `production.zip` file.
+
+1.  **Find and Unzip:**
+    *   In the root of the project, locate the file named `production.zip`.
+    *   Unzip or extract this file. This will create a new folder named `production`.
+
+2.  **Load the Extension in Chrome:**
+    *   Open Google Chrome.
+    *   Navigate to `chrome://extensions`.
+    *   Enable **"Developer mode"** using the toggle in the top-right corner.
+    *   Click the **"Load unpacked"** button.
+    *   Select the **`production` folder** that you just unzipped.
+
+3.  The "Geo-Variant Flight Fare Finder" extension should now appear in your list of extensions, ready for testing.
 
 ## Part 3: End-to-End Testing
 
