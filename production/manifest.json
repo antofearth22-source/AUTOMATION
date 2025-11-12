@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Geo-Variant Flight Fare Finder",
+  "version": "1.0",
+  "description": "Searches for flight fares from multiple countries to find the best deal.",
+  "permissions": [
+    "storage",
+    "proxy",
+    "webRequest",
+    "webRequestAuthProvider",
+    "declarativeNetRequest",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
