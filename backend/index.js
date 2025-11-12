@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const pLimit = require('p-limit');
 const currencyConverter = require('./services/currency-converter');
+const airportSearchProvider = require('./providers/airport-search-provider');
 
 // Load configuration
 const config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
@@ -11,7 +12,7 @@ const config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
 const providers = [];
 const providersDir = path.join(__dirname, 'providers');
 fs.readdirSync(providersDir).forEach(file => {
-  if (file.endsWith('.js')) {
+  if (file.endsWith('.js') && file !== 'airport-search-provider.js') {
     const provider = require(path.join(providersDir, file));
     providers.push(provider);
     console.log(`Loaded provider: ${file}`);
@@ -89,7 +90,7 @@ const apiKeyMiddleware = (req, res, next) => {
   }
 };
 
-// --- API Endpoint ---
+// --- API Endpoints ---
 app.post('/search-flights', apiKeyMiddleware, async (req, res) => {
   const { origin, destination, date, date_flexibility, stops } = req.body;
 
@@ -110,6 +111,23 @@ app.post('/search-flights', apiKeyMiddleware, async (req, res) => {
     res.status(500).json({ error: 'An internal server error occurred' });
   }
 });
+
+app.get('/autocomplete-airports', apiKeyMiddleware, async (req, res) => {
+  const { query } = req.query;
+
+  if (!query) {
+    return res.status(400).json({ error: 'Missing required query parameter' });
+  }
+
+  try {
+    const results = await airportSearchProvider.search(query);
+    res.json(results);
+  } catch (error) {
+    console.error('Error during airport autocomplete:', error);
+    res.status(500).json({ error: 'An internal server error occurred' });
+  }
+});
+
 
 const PORT = process.env.PORT || 3000;
 if (require.main === module) {

@@ -8,10 +8,58 @@ function run() {
   const dateFlexibilityInput = document.getElementById('date-flexibility');
   const stopsInput = document.getElementById('stops');
   const resultsDiv = document.getElementById('results');
+  const originAutocomplete = document.getElementById('origin-autocomplete');
+  const destinationAutocomplete = document.getElementById('destination-autocomplete');
 
-  const API_URL = 'http://localhost:3000/search-flights';
+  const API_URL = 'http://localhost:3000';
   const API_KEY = 'A_SHARED_SECRET_KEY_FOR_EXTENSION_TO_USE';
 
+  // --- Autocomplete Logic ---
+  let debounceTimeout;
+  originInput.addEventListener('input', () => {
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => handleAutocomplete(originInput, originAutocomplete), 300);
+  });
+  destinationInput.addEventListener('input', () => {
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => handleAutocomplete(destinationInput, destinationAutocomplete), 300);
+  });
+
+  async function handleAutocomplete(inputElement, autocompleteElement) {
+    const query = inputElement.value;
+    if (query.length < 2) {
+      autocompleteElement.innerHTML = '';
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/autocomplete-airports?query=${query}`, {
+        headers: { 'X-API-Key': API_KEY }
+      });
+      const airports = await response.json();
+      renderAutocomplete(airports, inputElement, autocompleteElement);
+    } catch (error) {
+      console.error('Autocomplete failed:', error);
+    }
+  }
+
+  function renderAutocomplete(airports, inputElement, autocompleteElement) {
+    let html = '';
+    airports.forEach(airport => {
+      html += `<div data-code="${airport.code}">${airport.name}</div>`;
+    });
+    autocompleteElement.innerHTML = html;
+
+    autocompleteElement.querySelectorAll('div').forEach(div => {
+      div.addEventListener('click', () => {
+        inputElement.value = div.dataset.code;
+        autocompleteElement.innerHTML = '';
+      });
+    });
+  }
+
+
+  // --- Search Logic ---
   searchButton.addEventListener('click', async () => {
     const origin = originInput.value;
     const destination = destinationInput.value;
@@ -27,7 +75,7 @@ function run() {
     resultsDiv.innerHTML = '<div class="loading"><p>Searching for flights...</p></div>';
 
     try {
-      const response = await fetch(API_URL, {
+      const response = await fetch(`${API_URL}/search-flights`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

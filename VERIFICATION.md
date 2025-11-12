@@ -39,29 +39,33 @@ This guide provides a step-by-step process for manually testing the complete fun
     *   Click the puzzle piece icon in the Chrome toolbar to open the extensions menu.
     *   Click on "Geo-Variant Flight Fare Finder" to open the popup.
 
-2.  **Perform a Flight Search:**
-    *   **Origin:** Enter `JFK`
-    *   **Destination:** Enter `LHR`
+2.  **Test the Autocomplete Feature:**
+    *   In the "Origin" field, type "lon". You should see a dropdown with "London Heathrow (LHR)", "London Gatwick (LGW)", etc.
+    *   Click on "London Heathrow (LHR)". The "Origin" field should now be filled with "LHR".
+    *   In the "Destination" field, type "tok". You should see a dropdown with "Tokyo (NRT)" and "Tokyo (HND)".
+    *   Click on "Tokyo (NRT)". The "Destination" field should now be filled with "NRT".
+
+3.  **Perform a Flight Search:**
     *   **Date:** Select a date in the future (e.g., 2025-12-25)
     *   **Date Flexibility:** Set to `1`
     *   **Stops:** Select "Non-stop only"
     *   Click "Search Flights".
 
-3.  **Verify the Results:**
+4.  **Verify the Results:**
     *   You should see a "Searching for flights..." message, followed by a list of flight results.
     *   Verify that the results are sorted from cheapest to most expensive.
     *   Verify that each result displays the country name, the price in the local currency, and the price in USD.
     *   **Verify that all the flights in the results list have 0 stops.**
 
-4.  **Test the "Booking Key" (Fingerprint Spoofing):**
+5.  **Test the "Booking Key" (Fingerprint Spoofing):**
     *   Find a result from a country other than your own (e.g., "Book from India").
     *   Click the "Book Now" button.
 
-5.  **Verify the Proxy Warning:**
+6.  **Verify the Proxy Warning:**
     *   A new tab should open with a "Proxy Warning".
     *   Read the warning and click "Proceed".
 
-6.  **Verify the Spoofed Booking Tab:**
+7.  **Verify the Spoofed Booking Tab:**
     *   A new tab should open with the booking link.
     *   To verify that the spoofing is working, you can open the developer tools (`Ctrl+Shift+I` or `Cmd+Opt+I`) and check the following:
         *   **IP Address:** The IP address should be different from your own. You can verify this by searching "what is my ip" in a separate, non-proxied tab and comparing it to the IP address in the proxied tab.
@@ -70,7 +74,7 @@ This guide provides a step-by-step process for manually testing the complete fun
             *   `new Intl.DateTimeFormat().resolvedOptions().timeZone` - This should return the timezone of the selected country (e.g., `Asia/Kolkata`).
             *   `navigator.language` - This should return the language of the selected country (e.g., `en-IN`).
 
-7.  **Verify the Automatic Cleanup:**
+8.  **Verify the Automatic Cleanup:**
     *   Close the booking tab.
     *   The proxy should now be disabled. You can verify this by trying to browse to a new website in a different tab. Your browsing should now be back to normal.
 
