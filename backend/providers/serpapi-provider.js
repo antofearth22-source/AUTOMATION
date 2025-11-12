@@ -1,5 +1,5 @@
 // backend/providers/serpapi-provider.js
-const axios = require('axios');
+const { makeRequest } = require('../services/request-manager');
 const config = require('../config.json');
 
 /**
@@ -19,6 +19,8 @@ async function search(searchParams, country) {
   const proxyPassword = config.proxy.password;
 
   const axiosConfig = {
+    method: 'get',
+    url: 'https://serpapi.com/search', // This would be the real SerpApi endpoint
     proxy: {
       host: proxyHost,
       port: proxyPort,
@@ -26,11 +28,18 @@ async function search(searchParams, country) {
         username: proxyUsername,
         password: proxyPassword
       }
+    },
+    params: {
+      // Real SerpApi parameters would go here
+      // engine: 'google_flights',
+      // ...searchParams,
+      // gl: country.serpapi_gl,
+      // api_key: config.apiKeys.serpapi
     }
   };
 
-  // In a real implementation, you would use axios to make a request to the SerpApi endpoint:
-  // const response = await axios.get('https://serpapi.com/search', { ...axiosConfig, params: { ... } });
+  // In a real implementation, you would use the request manager to make the request:
+  // const response = await makeRequest(axiosConfig);
   // For now, we will just simulate the request and return mock data.
 
   // Simulate network delay
@@ -43,6 +52,7 @@ async function search(searchParams, country) {
       origin: searchParams.origin,
       destination: searchParams.destination,
       date: searchParams.date,
+      stops: Math.floor(Math.random() * 3), // Add random stop data for filtering
       price: {
         amount: Math.floor(400 + Math.random() * 200),
         currency: 'USD',

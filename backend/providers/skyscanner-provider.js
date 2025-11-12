@@ -1,5 +1,5 @@
 // backend/providers/skyscanner-provider.js
-const axios = require('axios');
+const { makeRequest } = require('../services/request-manager');
 const config = require('../config.json');
 
 /**
@@ -13,12 +13,14 @@ async function search(searchParams, country) {
   console.log(`[Skyscanner] Searching for flights from ${country.name} with params:`, searchParams);
 
   // --- Proxy Configuration ---
-  const proxyHost = `proxy.${country.code.toLowerCase()}.example.com`;
-  const proxyPort = 8080;
+  const proxyHost = config.proxy.host;
+  const proxyPort = config.proxy.port;
   const proxyUsername = config.proxy.username;
   const proxyPassword = config.proxy.password;
 
   const axiosConfig = {
+    method: 'get',
+    url: 'https://api.skyscanner.net/v3/flights/live/search/create', // This would be the real Skyscanner endpoint
     proxy: {
       host: proxyHost,
       port: proxyPort,
@@ -26,11 +28,17 @@ async function search(searchParams, country) {
         username: proxyUsername,
         password: proxyPassword
       }
+    },
+    params: {
+      // Real Skyscanner parameters would go here
+      // ...searchParams,
+      // market: country.skyscanner_market,
+      // ...
     }
   };
 
-  // In a real implementation, you would use axios to make a request to the Skyscanner API:
-  // const response = await axios.get('https://api.skyscanner.net/v3/flights/live/search/create', { ...axiosConfig, params: { ... } });
+  // In a real implementation, you would use the request manager to make the request:
+  // const response = await makeRequest(axiosConfig);
   // For now, we will just simulate the request and return mock data.
 
 
@@ -65,6 +73,7 @@ async function search(searchParams, country) {
       origin: searchParams.origin,
       destination: searchParams.destination,
       date: searchParams.date,
+      stops: Math.floor(Math.random() * 3), // Add random stop data for filtering
       price: {
         amount,
         currency,

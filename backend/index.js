@@ -22,7 +22,7 @@ fs.readdirSync(providersDir).forEach(file => {
  * The core aggregation engine.
  */
 async function searchAll(searchParams, dateFlexibility = 0) {
-  const limit = pLimit(5);
+  const limit = pLimit(config.concurrency);
   const promises = [];
   const baseDate = new Date(searchParams.date);
 
@@ -46,13 +46,22 @@ async function searchAll(searchParams, dateFlexibility = 0) {
 }
 
 /**
- * Normalizes and sorts the flight results.
+ * Normalizes, sorts, and filters the flight results.
  */
-async function normalizeAndSort(flights) {
+async function processResults(flights, stopsFilter) {
+  let filteredFlights = flights;
+
+  // --- Filtering ---
+  if (stopsFilter !== 'any') {
+    const maxStops = parseInt(stopsFilter, 10);
+    filteredFlights = flights.filter(flight => flight.stops <= maxStops);
+  }
+
+  // --- Normalization and Sorting ---
   const normalizedFlights = [];
   const targetCurrency = 'USD';
 
-  for (const flight of flights) {
+  for (const flight of filteredFlights) {
     const convertedAmount = await currencyConverter.convert(flight.price.amount, flight.price.currency, targetCurrency);
     normalizedFlights.push({
       ...flight,
@@ -82,7 +91,7 @@ const apiKeyMiddleware = (req, res, next) => {
 
 // --- API Endpoint ---
 app.post('/search-flights', apiKeyMiddleware, async (req, res) => {
-  const { origin, destination, date, date_flexibility } = req.body;
+  const { origin, destination, date, date_flexibility, stops } = req.body;
 
   if (!origin || !destination || !date) {
     return res.status(400).json({ error: 'Missing required search parameters' });
@@ -90,12 +99,12 @@ app.post('/search-flights', apiKeyMiddleware, async (req, res) => {
 
   try {
     const searchParams = { origin, destination, date };
-    console.log(`[API] Received search request:`, searchParams, `with flexibility: ${date_flexibility || 0}`);
+    console.log(`[API] Received search request:`, searchParams, `with flexibility: ${date_flexibility || 0}, stops: ${stops || 'any'}`);
 
     const allFlights = await searchAll(searchParams, date_flexibility);
-    const sortedFlights = await normalizeAndSort(allFlights);
+    const processedFlights = await processResults(allFlights, stops);
 
-    res.json(sortedFlights);
+    res.json(processedFlights);
   } catch (error) {
     console.error('Error during flight search:', error);
     res.status(500).json({ error: 'An internal server error occurred' });

@@ -44,12 +44,14 @@ This guide provides a step-by-step process for manually testing the complete fun
     *   **Destination:** Enter `LHR`
     *   **Date:** Select a date in the future (e.g., 2025-12-25)
     *   **Date Flexibility:** Set to `1`
+    *   **Stops:** Select "Non-stop only"
     *   Click "Search Flights".
 
 3.  **Verify the Results:**
     *   You should see a "Searching for flights..." message, followed by a list of flight results.
     *   Verify that the results are sorted from cheapest to most expensive.
     *   Verify that each result displays the country name, the price in the local currency, and the price in USD.
+    *   **Verify that all the flights in the results list have 0 stops.**
 
 4.  **Test the "Booking Key" (Fingerprint Spoofing):**
     *   Find a result from a country other than your own (e.g., "Book from India").

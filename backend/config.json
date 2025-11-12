@@ -11,6 +11,7 @@
     "host": "gw.dataimpulse.com",
     "port": 823
   },
+  "concurrency": 25,
   "countries": [
     { "code": "AD", "name": "Andorra", "serpapi_gl": "ad", "skyscanner_market": "AD", "language": "ca-AD", "timezone": "Europe/Andorra" },
     { "code": "AE", "name": "United Arab Emirates", "serpapi_gl": "ae", "skyscanner_market": "AE", "language": "ar-AE", "timezone": "Asia/Dubai" },

@@ -6,6 +6,7 @@ function run() {
   const destinationInput = document.getElementById('destination');
   const dateInput = document.getElementById('date');
   const dateFlexibilityInput = document.getElementById('date-flexibility');
+  const stopsInput = document.getElementById('stops');
   const resultsDiv = document.getElementById('results');
 
   const API_URL = 'http://localhost:3000/search-flights';
@@ -16,6 +17,7 @@ function run() {
     const destination = destinationInput.value;
     const date = dateInput.value;
     const date_flexibility = parseInt(dateFlexibilityInput.value, 10);
+    const stops = stopsInput.value;
 
     if (!origin || !destination || !date) {
       resultsDiv.innerHTML = '<p style="color: red;">Please fill in all fields.</p>';
@@ -31,7 +33,7 @@ function run() {
           'Content-Type': 'application/json',
           'X-API-Key': API_KEY,
         },
-        body: JSON.stringify({ origin, destination, date, date_flexibility }),
+        body: JSON.stringify({ origin, destination, date, date_flexibility, stops }),
       });
 
       if (!response.ok) {
