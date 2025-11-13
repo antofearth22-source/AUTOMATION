@@ -1,6 +1,0 @@
-2025-11-06 13:20:32 - [INFO] - (MainThread) - Logger configured successfully.
-2025-11-06 13:20:32 - [INFO] - (MainThread) - This is an info message.
-2025-11-06 13:20:32 - [WARNING] - (MainThread) - This is a warning message.
-2025-11-06 13:20:32 - [ERROR] - (MainThread) - This is an error message.
-2025-11-06 13:20:32 - [INFO] - (Slot-1) - Logging from thread: Slot-1
-2025-11-06 13:20:32 - [INFO] - (Slot-2) - Logging from thread: Slot-2
