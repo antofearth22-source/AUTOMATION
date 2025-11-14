@@ -9,7 +9,7 @@ BerthPreference = Literal["Lower", "Middle", "Upper", "Side Lower", "Side Upper"
 FoodPreference = Literal["Veg", "Non-Veg", "No Food"]
 TrainClassCode = Literal["SL", "1A", "2A", "3A", "3E", "CC", "EC", "2S"]
 QuotaCode = Literal["GN", "TQ", "PT", "LD"]
-BrowserType = Literal["chrome", "edge"]
+BrowserType = Literal["chrome", "edge", "brave"]
 LogLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR"]
 
 class IRCTCAccount(BaseModel):
@@ -58,5 +58,8 @@ class Settings(BaseModel):
     preferred_browser: BrowserType = "chrome"
     chrome_path: Optional[str] = None
     edge_path: Optional[str] = None
+    brave_path: Optional[str] = None
     time_offset_seconds_before_tatkal: int = 10
     log_level: LogLevel = "INFO"
+    truecaptcha_api_key: Optional[str] = None
+    truecaptcha_user_id: Optional[str] = None
